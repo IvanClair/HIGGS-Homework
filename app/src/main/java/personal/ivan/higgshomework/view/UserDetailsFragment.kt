@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import personal.ivan.higgshomework.R
-import personal.ivan.higgshomework.databinding.FragmentUserListBinding
+import personal.ivan.higgshomework.databinding.FragmentUserDetailsBinding
 
-class UserListFragment : Fragment() {
+class UserDetailsFragment : Fragment() {
 
     // Data Binding
-    private lateinit var binding: FragmentUserListBinding
+    private lateinit var binding: FragmentUserDetailsBinding
 
     // region Life Cycle
 
@@ -23,7 +23,7 @@ class UserListFragment : Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate(
             inflater,
-            R.layout.fragment_user_list,
+            R.layout.fragment_user_details,
             container,
             false
         )
