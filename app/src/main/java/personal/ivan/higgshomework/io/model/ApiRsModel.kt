@@ -1,4 +1,4 @@
-package personal.ivan.higgshomework.io
+package personal.ivan.higgshomework.io.model
 
 import com.squareup.moshi.Json
 
