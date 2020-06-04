@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/userListFragment"
-        android:name="personal.ivan.higgshomework.view.UserListFragment"
+        android:name="personal.ivan.higgshomework.view.user_list.UserListFragment"
         android:label="UserListFragment"
         tools:layout="@layout/fragment_user_list">
         <action

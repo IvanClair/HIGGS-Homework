@@ -1,12 +1,17 @@
 package personal.ivan.higgshomework.di
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
+import personal.ivan.higgshomework.binding_model.UserListPageBindingModel
 import personal.ivan.higgshomework.view.UserDetailsFragment
-import personal.ivan.higgshomework.view.UserListFragment
+import personal.ivan.higgshomework.view.user_list.UserListAdapter
+import personal.ivan.higgshomework.view.user_list.UserListFragment
 import personal.ivan.higgshomework.view_model.MainViewModel
 import javax.inject.Scope
 
@@ -26,11 +31,19 @@ annotation class MainScope
 abstract class MainFragmentModule {
 
     @MainScope
-    @ContributesAndroidInjector(modules = [MainViewModelModule::class])
+    @ContributesAndroidInjector(
+        modules = [
+            MainViewModelModule::class,
+            MainScopeModule::class]
+    )
     abstract fun contributeUserListFragment(): UserListFragment
 
     @MainScope
-    @ContributesAndroidInjector(modules = [MainViewModelModule::class])
+    @ContributesAndroidInjector(
+        modules = [
+            MainViewModelModule::class,
+            MainScopeModule::class]
+    )
     abstract fun contributeUserDetailsFragment(): UserDetailsFragment
 }
 
@@ -47,6 +60,29 @@ abstract class MainViewModelModule {
     @IntoMap
     @ViewModelKey(MainViewModel::class)
     abstract fun bindMainViewModel(viewModel: MainViewModel): ViewModel
+}
+
+// endregion
+
+// region Main Scope Module
+
+@Module
+object MainScopeModule {
+
+    /**
+     * Provide user list page binding model
+     */
+    fun provideUserListPageBindingModel(): LiveData<UserListPageBindingModel> =
+        liveData { emit(UserListPageBindingModel()) }
+
+    /**
+     * Provide user list adapter
+     */
+    @JvmStatic
+    @MainScope
+    @Provides
+    fun provideUserListAdapter(viewModel: MainViewModel): UserListAdapter =
+        UserListAdapter(viewModel = viewModel)
 }
 
 // endregion
