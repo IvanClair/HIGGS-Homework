@@ -3,7 +3,7 @@ package personal.ivan.higgshomework.io.model
 import com.squareup.moshi.Json
 
 /**
- * Required GitHub user information
+ * Summary of a user
  */
 data class GitHubUserSummary(
     @field:Json(name = "avatar_url") val avatarUrl: String?,
@@ -12,7 +12,7 @@ data class GitHubUserSummary(
 )
 
 /**
- * Detailed information of a certain user
+ * Detailed information of a user
  */
 data class GitHubUserDetails(
     @field:Json(name = "avatar_url") val avatarUrl: String?,
