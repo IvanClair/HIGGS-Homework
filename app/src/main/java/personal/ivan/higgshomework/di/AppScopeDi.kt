@@ -13,8 +13,11 @@ import dagger.android.AndroidInjectionModule
 import dagger.android.AndroidInjector
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import personal.ivan.higgshomework.BuildConfig
 import personal.ivan.higgshomework.MainApplication
 import personal.ivan.higgshomework.R
+import personal.ivan.higgshomework.io.network.GitHubService
+import personal.ivan.higgshomework.repository.GitHubRepository
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
@@ -66,21 +69,28 @@ annotation class ViewModelKey(val value: KClass<out ViewModel>)
 @Module
 object RetrofitModule {
 
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideGitHubRepository(service: GitHubService): GitHubRepository =
+        GitHubRepository(service = service)
+
     /**
      * Create Retrofit for API call
      */
     @JvmStatic
     @Singleton
     @Provides
-    fun provideRetrofit(
+    fun provideGitHubService(
         application: MainApplication,
         okHttpClient: OkHttpClient
-    ): Retrofit =
+    ): GitHubService =
         Retrofit.Builder()
-//            .baseUrl(application.getString(R.string.base_url_podcast))
+            .baseUrl(application.getString(R.string.base_url_git_hub))
             .addConverterFactory(MoshiConverterFactory.create())
             .client(okHttpClient)
             .build()
+            .create(GitHubService::class.java)
 
     /**
      * Setting HTTP configs
@@ -90,7 +100,12 @@ object RetrofitModule {
     @Provides
     fun provideOkHttpClient(interceptor: HttpLoggingInterceptor): OkHttpClient =
         OkHttpClient.Builder()
-            .apply { addInterceptor(interceptor) }
+            .apply {
+                // log on debug mode
+                if (BuildConfig.DEBUG) {
+                    addInterceptor(interceptor)
+                }
+            }
             .build()
 
     /**
@@ -100,8 +115,7 @@ object RetrofitModule {
     @Singleton
     @Provides
     fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor =
-        HttpLoggingInterceptor()
-            .apply { level = HttpLoggingInterceptor.Level.BODY }
+        HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
 }
 
 // endregion
@@ -111,6 +125,9 @@ object RetrofitModule {
 @com.bumptech.glide.annotation.GlideModule
 class MyGlideModule : AppGlideModule() {
 
+    /**
+     * Set up request and transition for Glide
+     */
     override fun applyOptions(
         context: Context,
         builder: GlideBuilder
