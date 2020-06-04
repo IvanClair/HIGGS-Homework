@@ -4,8 +4,8 @@ import androidx.lifecycle.liveData
 import personal.ivan.higgshomework.io.model.IoRqStatusModel
 
 /**
- * @param S source from network or database
- * @param R result of output
+ * @param S origin data (source from network or database)
+ * @param R converted data (result of output)
  */
 abstract class IoUtil<S, R> {
 

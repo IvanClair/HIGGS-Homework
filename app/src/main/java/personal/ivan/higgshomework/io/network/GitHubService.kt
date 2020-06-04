@@ -1,5 +1,6 @@
 package personal.ivan.higgshomework.io.network
 
+import personal.ivan.higgshomework.io.model.GitHubUserDetails
 import personal.ivan.higgshomework.io.model.GitHubUserSummary
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -35,5 +36,5 @@ interface GitHubService {
      * @param username the username
      */
     @GET("users/{username}")
-    suspend fun getUserDetails(@Path("username") username: String)
+    suspend fun getUserDetails(@Path("username") username: String): GitHubUserDetails
 }
