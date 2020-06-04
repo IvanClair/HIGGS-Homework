@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="index"
+            type="int" />
+
+        <variable
+            name="viewModel"
+            type="personal.ivan.higgshomework.view_model.MainViewModel" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        style="@style/MyCardView"
+        android:onClick="@{(v) -> viewModel.userOnClickListener(v)}">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/frame_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp">
+
+            <ImageView
+                android:id="@+id/image_view_avatar"
+                style="@style/MyImageView.Avatar"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_launcher_foreground"
+                app:layout_constraintDimensionRatio="W,1:1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/image_view_badge"
+                style="@style/MyImageView"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:contentDescription="@null"
+                android:src="@drawable/bg_badge"
+                app:layout_constraintEnd_toEndOf="@+id/image_view_avatar"
+                app:layout_constraintTop_toTopOf="@+id/image_view_avatar" />
+
+            <TextView
+                android:id="@+id/text_view_user_name"
+                style="@style/MyTextView.UserName"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/image_view_avatar"
+                tools:text="ivanf10710" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

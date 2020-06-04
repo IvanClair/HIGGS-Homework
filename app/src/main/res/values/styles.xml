@@ -40,4 +40,30 @@
         <item name="android:layout_margin">16dp</item>
     </style>
     <!--  endregion  -->
+
+    <!--  region ImageView  -->
+    <style name="MyImageView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="MyImageView.Avatar" parent="MyImageView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+    </style>
+    <!--  endregion  -->
+
+    <!--  region TextView  -->
+
+    <style name="MyTextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textDirection">locale</item>
+    </style>
+
+    <style name="MyTextView.UserName" parent="MyTextView">
+        <item name="android:textAppearance">?attr/textAppearanceHeadline6</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <!--  endregion  -->
 </resources>
