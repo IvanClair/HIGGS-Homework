@@ -54,16 +54,28 @@
     <!--  endregion  -->
 
     <!--  region TextView  -->
-
     <style name="MyTextView">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
         <item name="android:textDirection">locale</item>
     </style>
 
     <style name="MyTextView.UserName" parent="MyTextView">
+        <item name="android:layout_marginStart">4dp</item>
+        <item name="android:layout_marginEnd">4dp</item>
         <item name="android:textAppearance">?attr/textAppearanceHeadline6</item>
         <item name="android:gravity">center</item>
+    </style>
+
+    <style name="MyTextView.Label" parent="MyTextView">
+        <item name="android:textAppearance">?attr/textAppearanceCaption</item>
+    </style>
+
+    <style name="MyTextView.Value" parent="MyTextView">
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:textAppearance">?attr/textAppearanceSubtitle1</item>
     </style>
     <!--  endregion  -->
 </resources>

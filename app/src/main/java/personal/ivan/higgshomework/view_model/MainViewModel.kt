@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.paging.PagedList
+import personal.ivan.higgshomework.binding_model.UserDetailsPageBindingModel
 import personal.ivan.higgshomework.binding_model.UserListPageBindingModel
 import personal.ivan.higgshomework.binding_model.UserSummaryVhBindingModel
 import personal.ivan.higgshomework.io.model.GitHubUserSummary
@@ -61,6 +62,13 @@ class MainViewModel @Inject constructor(private val repository: GitHubRepository
             )
         }
     }
+
+    // endregion
+
+    // region User Details Page
+
+    val userDetailsPageBindingModel: MutableLiveData<UserDetailsPageBindingModel> =
+        MutableLiveData()
 
     // endregion
 }
