@@ -1,6 +1,11 @@
 package personal.ivan.higgshomework.repository
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.paging.PagedList
+import androidx.paging.toLiveData
+import kotlinx.coroutines.CoroutineScope
+import personal.ivan.higgshomework.binding_model.UserSummaryVhBindingModel
 import personal.ivan.higgshomework.io.model.GitHubUserDetails
 import personal.ivan.higgshomework.io.model.GitHubUserSummary
 import personal.ivan.higgshomework.io.model.IoRqStatusModel
@@ -12,25 +17,36 @@ class GitHubRepository @Inject constructor(private val service: GitHubService) {
 
     // Constant
     companion object {
-        const val PAGE_LIMIT = 30
+        const val PAGE_LIMIT = 180
+        const val PREFETCH_DISTANCE = 5
     }
 
     /**
-     * Get user list start from assigned index
+     * Get user list by paging
+     *
+     * @param scope    the assigned [CoroutineScope]
+     * @param ioStatus live data for listen IO status
      */
-    fun getUserList(index: Int): LiveData<IoRqStatusModel<List<GitHubUserSummary>>> =
-        object : IoUtil<List<GitHubUserSummary>, List<GitHubUserSummary>>() {
-            override suspend fun loadFromDb(): List<GitHubUserSummary>? = null
+    fun getUserPagedList(
+        scope: CoroutineScope,
+        ioStatus: MutableLiveData<IoRqStatusModel<List<GitHubUserSummary>>>
+    ): LiveData<PagedList<UserSummaryVhBindingModel>> {
+        // create user list data source factory
+        val factory = GitHubUserListDataSourceFactory(
+            service = service,
+            scope = scope,
+            ioStatus = ioStatus
+        )
 
-            override suspend fun loadFromNetwork(): List<GitHubUserSummary>? =
-                service.getUserList(since = index)
+        // pagination config
+        val config = PagedList.Config.Builder()
+            .setEnablePlaceholders(false)
+            .setPageSize(PAGE_LIMIT)
+            .setPrefetchDistance(PREFETCH_DISTANCE)
+            .build()
 
-            override suspend fun convertFromSource(source: List<GitHubUserSummary>?): List<GitHubUserSummary>? =
-                source
-
-            override suspend fun saveToDb(data: List<GitHubUserSummary>) {}
-
-        }.getLiveData()
+        return factory.toLiveData(config)
+    }
 
     /**
      * Search users by [keyword]
