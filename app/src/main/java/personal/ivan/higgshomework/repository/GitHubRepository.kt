@@ -17,7 +17,7 @@ class GitHubRepository @Inject constructor(private val service: GitHubService) {
 
     // Constant
     companion object {
-        const val PAGE_LIMIT = 30
+        const val PAGE_LIMIT = 180
         const val PREFETCH_DISTANCE = 5
     }
 
