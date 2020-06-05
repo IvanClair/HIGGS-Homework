@@ -29,7 +29,7 @@ class UserDetailsFragment : DaggerFragment() {
     private val viewModel by navGraphViewModels<MainViewModel>(R.id.navigation_graph_main) { viewModelFactory }
 
     // Argument
-    private val mArguments by navArgs<UserDetailsFragmentArgs>()
+    private val args by navArgs<UserDetailsFragmentArgs>()
 
     // region Life Cycle
 
@@ -59,22 +59,24 @@ class UserDetailsFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // set up shared element for transition
-        binding.imageViewAvatar.transitionName = mArguments.username
+        binding.imageViewAvatar.transitionName = args.username
         // observe live data
         viewModel.apply {
             // set view model
-            binding.viewModel = this
+            selectedUsername.value = args.username
 
             // IO status
             ioStatus.observe(
                 viewLifecycleOwner,
-                Observer { binding.progressBar showOrHide (it.status == IoStatus.LOADING) })
+                Observer {
+                    binding.progressBar showOrHide (it.status == IoStatus.LOADING)
+                })
 
             // user details binding model
-//            userDetailsPageBindingModel.observe(
-//                viewLifecycleOwner,
-//                Observer { binding.viewModel = this}
-//            )
+            userDetailsPageBindingModel.observe(
+                viewLifecycleOwner,
+                Observer { binding.viewModel = this }
+            )
         }
     }
 

@@ -139,6 +139,7 @@ class MyGlideModule : AppGlideModule() {
                     .placeholder(R.drawable.ic_launcher_foreground)
                     .error(R.drawable.ic_launcher_foreground)
                     .fallback(R.drawable.ic_launcher_foreground)
+                    .centerCrop()
             )
             .setDefaultTransitionOptions(
                 Drawable::class.java,

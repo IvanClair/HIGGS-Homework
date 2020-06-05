@@ -51,9 +51,6 @@ class MainViewModel @Inject constructor(private val repository: GitHubRepository
         avatar: ImageView
     ) {
         if (UiUtil.allowClick()) {
-            // hit API
-            selectedUsername.value = model.username
-
             // navigate to user details page
             view.findNavController().navigate(
                 UserListFragmentDirections.navigateToUserDetails(username = model.username),
@@ -67,7 +64,7 @@ class MainViewModel @Inject constructor(private val repository: GitHubRepository
     // region User Details Page
 
     // selected username, use for trigger API
-    private val selectedUsername: MutableLiveData<String> = MutableLiveData()
+    val selectedUsername: MutableLiveData<String> = MutableLiveData()
 
     // user details page binding model
     val userDetailsPageBindingModel: LiveData<UserDetailsPageBindingModel> =
