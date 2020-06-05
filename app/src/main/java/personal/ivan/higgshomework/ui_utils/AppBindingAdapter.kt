@@ -8,9 +8,11 @@ import personal.ivan.higgshomework.di.GlideApp
  * Loading web image by Glide
  */
 @BindingAdapter("loadImage")
-fun setLoadImage(imageView: ImageView, url: String) {
-    GlideApp
-        .with(imageView)
-        .load(url)
-        .into(imageView)
+fun setLoadImage(imageView: ImageView, url: String?) {
+    url?.also {
+        GlideApp
+            .with(imageView)
+            .load(url)
+            .into(imageView)
+    }
 }

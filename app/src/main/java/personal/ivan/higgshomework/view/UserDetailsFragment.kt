@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
 import androidx.transition.TransitionInflater
@@ -12,6 +13,8 @@ import dagger.android.support.DaggerFragment
 import personal.ivan.higgshomework.R
 import personal.ivan.higgshomework.databinding.FragmentUserDetailsBinding
 import personal.ivan.higgshomework.di.AppViewModelFactory
+import personal.ivan.higgshomework.io.model.IoStatus
+import personal.ivan.higgshomework.ui_utils.showOrHide
 import personal.ivan.higgshomework.view_model.MainViewModel
 import javax.inject.Inject
 
@@ -57,6 +60,22 @@ class UserDetailsFragment : DaggerFragment() {
         super.onViewCreated(view, savedInstanceState)
         // set up shared element for transition
         binding.imageViewAvatar.transitionName = mArguments.username
+        // observe live data
+        viewModel.apply {
+            // set view model
+            binding.viewModel = this
+
+            // IO status
+            ioStatus.observe(
+                viewLifecycleOwner,
+                Observer { binding.progressBar showOrHide (it.status == IoStatus.LOADING) })
+
+            // user details binding model
+//            userDetailsPageBindingModel.observe(
+//                viewLifecycleOwner,
+//                Observer { binding.viewModel = this}
+//            )
+        }
     }
 
     // endregion

@@ -2,24 +2,23 @@ package personal.ivan.higgshomework.view_model
 
 import android.view.View
 import android.widget.ImageView
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.paging.PagedList
 import personal.ivan.higgshomework.binding_model.UserDetailsPageBindingModel
 import personal.ivan.higgshomework.binding_model.UserListPageBindingModel
 import personal.ivan.higgshomework.binding_model.UserSummaryVhBindingModel
-import personal.ivan.higgshomework.io.model.GitHubUserSummary
-import personal.ivan.higgshomework.io.model.IoRqStatusModel
+import personal.ivan.higgshomework.io.model.IoStatus
 import personal.ivan.higgshomework.repository.GitHubRepository
 import personal.ivan.higgshomework.ui_utils.UiUtil
 import personal.ivan.higgshomework.view.user_list.UserListFragmentDirections
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(private val repository: GitHubRepository) : ViewModel() {
+
+    // IO Status
+    val ioStatus: MutableLiveData<IoStatus> = MutableLiveData<IoStatus>()
 
     // region User List Page
 
@@ -29,13 +28,9 @@ class MainViewModel @Inject constructor(private val repository: GitHubRepository
             value = UserListPageBindingModel()
         }
 
-    // get user list IO status
-    val getUserIoStatus: MutableLiveData<IoRqStatusModel<List<GitHubUserSummary>>> =
-        MutableLiveData()
-
     // user list data list from IO
     val getUserPagedList: LiveData<PagedList<UserSummaryVhBindingModel>> =
-        repository.getUserPagedList(scope = viewModelScope, ioStatus = getUserIoStatus)
+        repository.getUserPagedList(scope = viewModelScope, ioStatus = ioStatus)
 
     /**
      * Update user list page UI widgets visibility
@@ -56,6 +51,10 @@ class MainViewModel @Inject constructor(private val repository: GitHubRepository
         avatar: ImageView
     ) {
         if (UiUtil.allowClick()) {
+            // hit API
+            selectedUsername.value = model.username
+
+            // navigate to user details page
             view.findNavController().navigate(
                 UserListFragmentDirections.navigateToUserDetails(username = model.username),
                 FragmentNavigatorExtras(avatar to model.username)
@@ -67,8 +66,16 @@ class MainViewModel @Inject constructor(private val repository: GitHubRepository
 
     // region User Details Page
 
-    val userDetailsPageBindingModel: MutableLiveData<UserDetailsPageBindingModel> =
-        MutableLiveData()
+    // selected username, use for trigger API
+    private val selectedUsername: MutableLiveData<String> = MutableLiveData()
+
+    // user details page binding model
+    val userDetailsPageBindingModel: LiveData<UserDetailsPageBindingModel> =
+        selectedUsername.switchMap {
+            repository.getUserDetails(
+                username = it, ioStatus = ioStatus
+            )
+        }
 
     // endregion
 }

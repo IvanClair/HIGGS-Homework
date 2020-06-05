@@ -23,9 +23,9 @@ android {
         }
     }
 
-    // Enable Data Binding
-    dataBinding {
-        enabled = true
+    // Build Features
+    buildFeatures {
+        dataBinding = true
     }
 
     // Assign Java Version
