@@ -30,7 +30,8 @@ import kotlin.reflect.KClass
     modules = [
         AndroidInjectionModule::class,
         ViewModelModule::class,
-        RetrofitModule::class]
+        RetrofitModule::class,
+        MainFragmentModule::class]
 )
 interface AppComponent : AndroidInjector<MainApplication> {
 

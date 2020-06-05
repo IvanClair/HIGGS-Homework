@@ -25,9 +25,12 @@ class UserListPageBindingModel : BaseObservable() {
     /**
      * Show or hide loading progress and search button
      */
-    fun updateVisibility(enable: Boolean) {
-        showLoading = enable
-        showSearchButton = enable
+    fun updateVisibility(
+        enableLoading: Boolean,
+        enableSearch: Boolean
+    ) {
+        showLoading = enableLoading
+        showSearchButton = enableSearch
     }
 }
 

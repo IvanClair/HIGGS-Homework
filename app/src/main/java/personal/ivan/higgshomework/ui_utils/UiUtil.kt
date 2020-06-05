@@ -7,9 +7,10 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
-import personal.ivan.higgshomework.BR
+import personal.ivan.higgshomework.databinding.VhUserSummaryBinding
+import personal.ivan.higgshomework.io.model.GitHubUserSummary
+import personal.ivan.higgshomework.view_model.MainViewModel
 
 object UiUtil {
 
@@ -57,27 +58,17 @@ object UiUtil {
         ) as T
 
     /**
-     * A general [RecyclerView.ViewHolder] class for [RecyclerView.Adapter]
-     *
-     * note : good to use this class for the view holder xml file which has position and viewModel as variable,
-     * extends this class and override [bind] to support more variables in the xml file
+     * View holder class for GitHub user summary
      */
-    open class BasicViewHolder(private val mBinding: ViewDataBinding) :
-        RecyclerView.ViewHolder(mBinding.root) {
+    class UserSummaryViewHolder(private val binding: VhUserSummaryBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-        /**
-         * @param position  position of the element
-         * @param viewModel custom view model which extends [ViewModel]
-         */
-        fun bind(
-            position: Int? = null,
-            viewModel: ViewModel? = null
-        ) {
-            // set up position and view model
-            position?.also { mBinding.setVariable(BR.index, position) }
-            viewModel?.also { mBinding.setVariable(BR.viewModel, viewModel) }
-            // execute UI changes
-            mBinding.executePendingBindings()
+        fun bind(model: GitHubUserSummary, viewModel: MainViewModel) {
+            binding.apply {
+                this.model = model
+                this.viewModel = viewModel
+                executePendingBindings()
+            }
         }
     }
 

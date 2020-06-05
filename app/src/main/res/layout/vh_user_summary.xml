@@ -8,8 +8,8 @@
         <import type="android.view.View" />
 
         <variable
-            name="index"
-            type="int" />
+            name="model"
+            type="personal.ivan.higgshomework.io.model.GitHubUserSummary" />
 
         <variable
             name="viewModel"
@@ -18,13 +18,13 @@
 
     <com.google.android.material.card.MaterialCardView
         style="@style/MyCardView"
-        android:onClick="@{(v) -> viewModel.userOnClickListener(v)}">
+        android:onClick="@{(v) -> viewModel.userOnClickListener(v, model)}">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/frame_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp">
+            android:paddingBottom="2dp">
 
             <ImageView
                 android:id="@+id/image_view_avatar"
@@ -34,24 +34,26 @@
                 app:layout_constraintDimensionRatio="W,1:1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:loadImage="@{viewModel.userVhModelList.data[index].avatarUrl}" />
+                app:loadImage="@{model.avatarUrl}" />
 
             <ImageView
                 android:id="@+id/image_view_badge"
                 style="@style/MyImageView"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="2dp"
                 android:contentDescription="@null"
                 android:src="@drawable/bg_badge"
-                android:visibility="@{viewModel.userVhModelList.data[index].admin ? View.VISIBLE : View.GONE}"
+                android:visibility="@{model.admin ? View.VISIBLE : View.GONE}"
                 app:layout_constraintEnd_toEndOf="@+id/image_view_avatar"
                 app:layout_constraintTop_toTopOf="@+id/image_view_avatar" />
 
             <TextView
                 android:id="@+id/text_view_user_name"
                 style="@style/MyTextView.UserName"
+                android:layout_marginStart="4dp"
                 android:layout_marginTop="8dp"
-                android:text="@{viewModel.userVhModelList.data[index].username}"
+                android:layout_marginEnd="4dp"
+                android:text="@{model.username}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/image_view_avatar"
                 tools:text="ivanf10710" />

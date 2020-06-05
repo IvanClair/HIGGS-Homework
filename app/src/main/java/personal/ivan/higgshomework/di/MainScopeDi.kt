@@ -70,12 +70,6 @@ abstract class MainViewModelModule {
 object MainScopeModule {
 
     /**
-     * Provide user list page binding model
-     */
-    fun provideUserListPageBindingModel(): LiveData<UserListPageBindingModel> =
-        liveData { emit(UserListPageBindingModel()) }
-
-    /**
      * Provide user list adapter
      */
     @JvmStatic

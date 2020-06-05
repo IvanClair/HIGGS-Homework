@@ -21,10 +21,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-            android:paddingBottom="16dp"
+            android:padding="12dp"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             tools:itemCount="2"
-            tools:listitem="@layout/vh_user" />
+            tools:listitem="@layout/vh_user_summary" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"

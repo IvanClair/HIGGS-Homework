@@ -10,21 +10,26 @@ import personal.ivan.higgshomework.view_model.MainViewModel
 import javax.inject.Inject
 
 class UserListAdapter @Inject constructor(private val viewModel: MainViewModel) :
-    PagedListAdapter<GitHubUserSummary, UiUtil.BasicViewHolder>(DIFF_CALLBACK) {
+    PagedListAdapter<GitHubUserSummary, UiUtil.UserSummaryViewHolder>(DIFF_CALLBACK) {
 
     // region Override
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UiUtil.BasicViewHolder =
-        UiUtil.BasicViewHolder(
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): UiUtil.UserSummaryViewHolder =
+        UiUtil.UserSummaryViewHolder(
             UiUtil.inflateViewBinding(
                 context = parent.context,
-                layoutResId = R.layout.vh_user,
+                layoutResId = R.layout.vh_user_summary,
                 parent = parent
             )
         )
 
-    override fun onBindViewHolder(holder: UiUtil.BasicViewHolder, position: Int) {
-        holder.bind(position = position, viewModel = viewModel)
+    override fun onBindViewHolder(holder: UiUtil.UserSummaryViewHolder, position: Int) {
+        getItem(position)?.also {
+            holder.bind(model = it, viewModel = viewModel)
+        }
     }
 
     // endregion

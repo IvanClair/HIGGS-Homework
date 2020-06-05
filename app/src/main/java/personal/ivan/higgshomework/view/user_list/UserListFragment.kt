@@ -7,11 +7,13 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.navGraphViewModels
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.GridLayoutManager
 import dagger.android.support.DaggerFragment
 import personal.ivan.higgshomework.R
 import personal.ivan.higgshomework.databinding.FragmentUserListBinding
 import personal.ivan.higgshomework.di.AppViewModelFactory
+import personal.ivan.higgshomework.io.model.GitHubUserSummary
 import personal.ivan.higgshomework.io.model.IoRqStatusModel
 import personal.ivan.higgshomework.ui_utils.showIoAlert
 import personal.ivan.higgshomework.view_model.MainViewModel
@@ -38,12 +40,13 @@ class UserListFragment : DaggerFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.fragment_user_list,
-            container,
-            false
-        )
+        binding =
+            DataBindingUtil.inflate(
+                inflater,
+                R.layout.fragment_user_list,
+                container,
+                false
+            )
         return binding.root
     }
 
@@ -52,16 +55,24 @@ class UserListFragment : DaggerFragment() {
         initRecyclerView()
         viewModel.apply {
 
-            // user view holder model list
-            userVhModelList.observe(
+            // set up view model
+            binding.viewModel = this
+
+            // IO status of get user API
+            getUserIoStatus.observe(
                 viewLifecycleOwner,
                 Observer {
-                    updateUserListUiWidgetsVisibility(enable = it.status == IoRqStatusModel.LOADING)
-                    when (it.status) {
-                        IoRqStatusModel.FAIL -> requireActivity().showIoAlert()
-                        IoRqStatusModel.SUCCESS -> updateDataSource()
+                    updateUserListUiWidgetsVisibility(loading = it.status == IoRqStatusModel.LOADING)
+                    if (it.status == IoRqStatusModel.FAIL) {
+                        activity?.showIoAlert()
                     }
                 })
+
+            // user paged list
+            getUserPagedList.observe(
+                viewLifecycleOwner,
+                Observer { updateDataSource(it) }
+            )
         }
     }
 
@@ -72,7 +83,7 @@ class UserListFragment : DaggerFragment() {
     private fun initRecyclerView() {
         binding.recyclerViewUser.apply {
             setHasFixedSize(true)
-            layoutManager = GridLayoutManager(context, 2)
+            layoutManager = GridLayoutManager(context, 3)
             adapter = userListAdapter
 
             // return transition
@@ -84,8 +95,8 @@ class UserListFragment : DaggerFragment() {
         }
     }
 
-    private fun updateDataSource() {
-
+    private fun updateDataSource(dataList: PagedList<GitHubUserSummary>?) {
+        (binding.recyclerViewUser.adapter as UserListAdapter).submitList(dataList)
     }
 
     // endregion
