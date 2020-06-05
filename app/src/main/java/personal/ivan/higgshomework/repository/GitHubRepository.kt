@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedList
 import androidx.paging.toLiveData
 import kotlinx.coroutines.CoroutineScope
+import personal.ivan.higgshomework.binding_model.UserSummaryVhBindingModel
 import personal.ivan.higgshomework.io.model.GitHubUserDetails
 import personal.ivan.higgshomework.io.model.GitHubUserSummary
 import personal.ivan.higgshomework.io.model.IoRqStatusModel
@@ -29,7 +30,7 @@ class GitHubRepository @Inject constructor(private val service: GitHubService) {
     fun getUserPagedList(
         scope: CoroutineScope,
         ioStatus: MutableLiveData<IoRqStatusModel<List<GitHubUserSummary>>>
-    ): LiveData<PagedList<GitHubUserSummary>> {
+    ): LiveData<PagedList<UserSummaryVhBindingModel>> {
         // create user list data source factory
         val factory = GitHubUserListDataSourceFactory(
             service = service,

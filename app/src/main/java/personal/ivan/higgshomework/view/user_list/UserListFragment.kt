@@ -11,6 +11,7 @@ import androidx.paging.PagedList
 import androidx.recyclerview.widget.GridLayoutManager
 import dagger.android.support.DaggerFragment
 import personal.ivan.higgshomework.R
+import personal.ivan.higgshomework.binding_model.UserSummaryVhBindingModel
 import personal.ivan.higgshomework.databinding.FragmentUserListBinding
 import personal.ivan.higgshomework.di.AppViewModelFactory
 import personal.ivan.higgshomework.io.model.GitHubUserSummary
@@ -95,7 +96,7 @@ class UserListFragment : DaggerFragment() {
         }
     }
 
-    private fun updateDataSource(dataList: PagedList<GitHubUserSummary>?) {
+    private fun updateDataSource(dataList: PagedList<UserSummaryVhBindingModel>?) {
         (binding.recyclerViewUser.adapter as UserListAdapter).submitList(dataList)
     }
 

@@ -3,6 +3,7 @@ package personal.ivan.higgshomework.binding_model
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import personal.ivan.higgshomework.BR
+import personal.ivan.higgshomework.io.model.GitHubUserSummary
 
 // region User List Page
 
@@ -32,6 +33,21 @@ class UserListPageBindingModel : BaseObservable() {
         showLoading = enableLoading
         showSearchButton = enableSearch
     }
+}
+
+/**
+ * Data class for display user summary on view holder
+ */
+data class UserSummaryVhBindingModel(
+    val avatarUrl: String,
+    val username: String,
+    val admin: Boolean
+) {
+    constructor(data: GitHubUserSummary) : this(
+        avatarUrl = data.avatarUrl ?: "",
+        username = data.username ?: "",
+        admin = data.admin ?: false
+    )
 }
 
 // endregion

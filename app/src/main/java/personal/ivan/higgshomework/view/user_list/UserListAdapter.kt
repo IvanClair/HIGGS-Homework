@@ -4,13 +4,14 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import personal.ivan.higgshomework.R
+import personal.ivan.higgshomework.binding_model.UserSummaryVhBindingModel
 import personal.ivan.higgshomework.io.model.GitHubUserSummary
 import personal.ivan.higgshomework.ui_utils.UiUtil
 import personal.ivan.higgshomework.view_model.MainViewModel
 import javax.inject.Inject
 
 class UserListAdapter @Inject constructor(private val viewModel: MainViewModel) :
-    PagedListAdapter<GitHubUserSummary, UiUtil.UserSummaryViewHolder>(DIFF_CALLBACK) {
+    PagedListAdapter<UserSummaryVhBindingModel, UiUtil.UserSummaryViewHolder>(DIFF_CALLBACK) {
 
     // region Override
 
@@ -37,15 +38,15 @@ class UserListAdapter @Inject constructor(private val viewModel: MainViewModel) 
     // region Difference Callback
 
     companion object {
-        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<GitHubUserSummary>() {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<UserSummaryVhBindingModel>() {
             override fun areItemsTheSame(
-                oldItem: GitHubUserSummary,
-                newItem: GitHubUserSummary
+                oldItem: UserSummaryVhBindingModel,
+                newItem: UserSummaryVhBindingModel
             ): Boolean = oldItem == newItem
 
             override fun areContentsTheSame(
-                oldItem: GitHubUserSummary,
-                newItem: GitHubUserSummary
+                oldItem: UserSummaryVhBindingModel,
+                newItem: UserSummaryVhBindingModel
             ): Boolean = oldItem.hashCode() == newItem.hashCode()
         }
     }

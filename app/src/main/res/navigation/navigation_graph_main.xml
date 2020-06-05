@@ -20,5 +20,10 @@
         android:id="@+id/userDetailsFragment"
         android:name="personal.ivan.higgshomework.view.UserDetailsFragment"
         android:label="UserDetailsFragment"
-        tools:layout="@layout/fragment_user_details" />
+        tools:layout="@layout/fragment_user_details">
+        <argument
+            android:name="username"
+            android:defaultValue=" "
+            app:argType="string" />
+    </fragment>
 </navigation>

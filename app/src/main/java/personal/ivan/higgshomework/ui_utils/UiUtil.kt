@@ -8,6 +8,7 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
+import personal.ivan.higgshomework.binding_model.UserSummaryVhBindingModel
 import personal.ivan.higgshomework.databinding.VhUserSummaryBinding
 import personal.ivan.higgshomework.io.model.GitHubUserSummary
 import personal.ivan.higgshomework.view_model.MainViewModel
@@ -63,7 +64,7 @@ object UiUtil {
     class UserSummaryViewHolder(private val binding: VhUserSummaryBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(model: GitHubUserSummary, viewModel: MainViewModel) {
+        fun bind(model: UserSummaryVhBindingModel, viewModel: MainViewModel) {
             binding.apply {
                 this.model = model
                 this.viewModel = viewModel
