@@ -68,6 +68,7 @@ object UiUtil {
             binding.apply {
                 this.model = model
                 this.viewModel = viewModel
+                imageViewAvatar.transitionName = model.username
                 executePendingBindings()
             }
         }

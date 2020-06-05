@@ -1,11 +1,13 @@
 package personal.ivan.higgshomework.view_model
 
 import android.view.View
+import android.widget.ImageView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.paging.PagedList
 import personal.ivan.higgshomework.binding_model.UserListPageBindingModel
 import personal.ivan.higgshomework.binding_model.UserSummaryVhBindingModel
@@ -47,10 +49,16 @@ class MainViewModel @Inject constructor(private val repository: GitHubRepository
     /**
      * User clicked an user
      */
-    fun userOnClickListener(view: View, model: UserSummaryVhBindingModel) {
+    fun userOnClickListener(
+        view: View,
+        model: UserSummaryVhBindingModel,
+        avatar: ImageView
+    ) {
         if (UiUtil.allowClick()) {
-            view.findNavController()
-                .navigate(UserListFragmentDirections.navigateToUserDetails(username = model.username))
+            view.findNavController().navigate(
+                UserListFragmentDirections.navigateToUserDetails(username = model.username),
+                FragmentNavigatorExtras(avatar to model.username)
+            )
         }
     }
 

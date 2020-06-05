@@ -18,7 +18,7 @@
 
     <com.google.android.material.card.MaterialCardView
         style="@style/MyCardView"
-        android:onClick="@{(v) -> viewModel.userOnClickListener(v, model)}">
+        android:onClick="@{(v) -> viewModel.userOnClickListener(v, model, imageViewAvatar)}">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/frame_layout"
@@ -30,11 +30,11 @@
                 android:id="@+id/image_view_avatar"
                 style="@style/MyImageView.Avatar"
                 android:contentDescription="@null"
-                android:src="@drawable/ic_launcher_foreground"
                 app:layout_constraintDimensionRatio="W,1:1"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:loadImage="@{model.avatarUrl}" />
+                app:loadImage="@{model.avatarUrl}"
+                tools:src="@drawable/ic_launcher_foreground" />
 
             <ImageView
                 android:id="@+id/image_view_badge"
@@ -51,7 +51,7 @@
                 android:id="@+id/text_view_user_name"
                 style="@style/MyTextView.UserName"
                 android:layout_marginStart="4dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginEnd="4dp"
                 android:text="@{model.username}"
                 app:layout_constraintStart_toStartOf="parent"

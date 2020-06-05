@@ -88,11 +88,11 @@ class UserListFragment : DaggerFragment() {
             adapter = userListAdapter
 
             // return transition
-//            postponeEnterTransition()
-//            viewTreeObserver.addOnPreDrawListener {
-//                startPostponedEnterTransition()
-//                true
-//            }
+            postponeEnterTransition()
+            viewTreeObserver.addOnPreDrawListener {
+                startPostponedEnterTransition()
+                true
+            }
         }
     }
 

@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
+import androidx.transition.TransitionInflater
 import dagger.android.support.DaggerFragment
 import personal.ivan.higgshomework.R
 import personal.ivan.higgshomework.databinding.FragmentUserDetailsBinding
@@ -23,7 +25,19 @@ class UserDetailsFragment : DaggerFragment() {
     lateinit var viewModelFactory: AppViewModelFactory
     private val viewModel by navGraphViewModels<MainViewModel>(R.id.navigation_graph_main) { viewModelFactory }
 
+    // Argument
+    private val mArguments by navArgs<UserDetailsFragmentArgs>()
+
     // region Life Cycle
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        // override shared element transition
+        sharedElementEnterTransition =
+            TransitionInflater
+                .from(context)
+                .inflateTransition(android.R.transition.move)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,6 +55,8 @@ class UserDetailsFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // set up shared element for transition
+        binding.imageViewAvatar.transitionName = mArguments.username
     }
 
     // endregion
