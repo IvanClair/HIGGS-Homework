@@ -7,8 +7,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import personal.ivan.higgshomework.binding_model.UserSummaryVhBindingModel
-import personal.ivan.higgshomework.io.model.GitHubUserSummary
-import personal.ivan.higgshomework.io.model.IoRqStatusModel
+import personal.ivan.higgshomework.io.model.IoStatus
 import personal.ivan.higgshomework.io.network.GitHubService
 
 /**
@@ -17,7 +16,7 @@ import personal.ivan.higgshomework.io.network.GitHubService
 class GitHubUserListDataSourceFactory(
     private val service: GitHubService,
     private val scope: CoroutineScope,
-    private val ioStatus: MutableLiveData<IoRqStatusModel<List<GitHubUserSummary>>>
+    private val ioStatus: MutableLiveData<IoStatus>
 ) : DataSource.Factory<Int, UserSummaryVhBindingModel>() {
 
     /*
@@ -37,7 +36,7 @@ class GitHubUserListDataSourceFactory(
 class GitHubUserListDataSource(
     private val service: GitHubService,
     private val scope: CoroutineScope,
-    private val ioStatus: MutableLiveData<IoRqStatusModel<List<GitHubUserSummary>>>
+    private val ioStatus: MutableLiveData<IoStatus>
 ) : PageKeyedDataSource<Int, UserSummaryVhBindingModel>() {
 
     /*
@@ -81,15 +80,16 @@ class GitHubUserListDataSource(
     ) {
         scope.launch(Dispatchers.IO) {
             try {
-                ioStatus.postValue(IoRqStatusModel.loading())
+                ioStatus.postValue(IoStatus.loading())
                 val dataList = service.getUserList(since = index)
                 callback.invoke(
                     dataList.map { UserSummaryVhBindingModel(data = it) },
                     index + GitHubRepository.PAGE_LIMIT
                 )
-                ioStatus.postValue(IoRqStatusModel.success(data = dataList))
+                ioStatus.postValue(IoStatus.success())
             } catch (e: Exception) {
-                ioStatus.postValue(IoRqStatusModel.fail())
+                // todo handle error code
+                ioStatus.postValue(IoStatus.fail())
             }
         }
     }

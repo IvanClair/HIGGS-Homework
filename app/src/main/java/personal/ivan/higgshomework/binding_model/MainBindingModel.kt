@@ -3,6 +3,7 @@ package personal.ivan.higgshomework.binding_model
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import personal.ivan.higgshomework.BR
+import personal.ivan.higgshomework.io.model.GitHubUserDetails
 import personal.ivan.higgshomework.io.model.GitHubUserSummary
 
 // region User List Page
@@ -47,6 +48,28 @@ data class UserSummaryVhBindingModel(
         avatarUrl = data.avatarUrl ?: "",
         username = data.username ?: "",
         admin = data.admin ?: false
+    )
+}
+
+// endregion
+
+// region User Details Page
+
+data class UserDetailsPageBindingModel(
+    val avatarUrl: String,
+    val username: String,
+    val admin: Boolean,
+    val biography: String,
+    val location: String,
+    val blogUrl: String
+) {
+    constructor(data: GitHubUserDetails) : this(
+        avatarUrl = data.avatarUrl ?: "",
+        username = data.username ?: "",
+        admin = data.admin ?: false,
+        biography = data.biography ?: "N/A",
+        location = data.location ?: "N/A",
+        blogUrl = data.blogUrl ?: "N/A"
     )
 }
 

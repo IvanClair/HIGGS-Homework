@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
 import androidx.transition.TransitionInflater
@@ -12,6 +13,8 @@ import dagger.android.support.DaggerFragment
 import personal.ivan.higgshomework.R
 import personal.ivan.higgshomework.databinding.FragmentUserDetailsBinding
 import personal.ivan.higgshomework.di.AppViewModelFactory
+import personal.ivan.higgshomework.io.model.IoStatus
+import personal.ivan.higgshomework.ui_utils.showOrHide
 import personal.ivan.higgshomework.view_model.MainViewModel
 import javax.inject.Inject
 
@@ -26,7 +29,7 @@ class UserDetailsFragment : DaggerFragment() {
     private val viewModel by navGraphViewModels<MainViewModel>(R.id.navigation_graph_main) { viewModelFactory }
 
     // Argument
-    private val mArguments by navArgs<UserDetailsFragmentArgs>()
+    private val args by navArgs<UserDetailsFragmentArgs>()
 
     // region Life Cycle
 
@@ -56,7 +59,21 @@ class UserDetailsFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // set up shared element for transition
-        binding.imageViewAvatar.transitionName = mArguments.username
+        binding.imageViewAvatar.transitionName = args.username
+        // observe live data
+        viewModel.apply {
+            // IO status
+            ioStatus.observe(
+                viewLifecycleOwner,
+                Observer {
+                    binding.progressBar showOrHide (it.status == IoStatus.LOADING)
+                })
+
+            // user details binding model
+            getUserDetails(username = args.username).observe(
+                viewLifecycleOwner,
+                Observer { binding.model = it })
+        }
     }
 
     // endregion

@@ -14,8 +14,7 @@ import personal.ivan.higgshomework.R
 import personal.ivan.higgshomework.binding_model.UserSummaryVhBindingModel
 import personal.ivan.higgshomework.databinding.FragmentUserListBinding
 import personal.ivan.higgshomework.di.AppViewModelFactory
-import personal.ivan.higgshomework.io.model.GitHubUserSummary
-import personal.ivan.higgshomework.io.model.IoRqStatusModel
+import personal.ivan.higgshomework.io.model.IoStatus
 import personal.ivan.higgshomework.ui_utils.showIoAlert
 import personal.ivan.higgshomework.view_model.MainViewModel
 import javax.inject.Inject
@@ -59,12 +58,12 @@ class UserListFragment : DaggerFragment() {
             // set up view model
             binding.viewModel = this
 
-            // IO status of get user API
-            getUserIoStatus.observe(
+            // IO status
+            ioStatus.observe(
                 viewLifecycleOwner,
                 Observer {
-                    updateUserListUiWidgetsVisibility(loading = it.status == IoRqStatusModel.LOADING)
-                    if (it.status == IoRqStatusModel.FAIL) {
+                    updateUserListUiWidgetsVisibility(loading = it.status == IoStatus.LOADING)
+                    if (it.status == IoStatus.FAIL) {
                         activity?.showIoAlert()
                     }
                 })

@@ -1,16 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="model"
+            type="personal.ivan.higgshomework.binding_model.UserDetailsPageBindingModel" />
+
+        <variable
+            name="viewModel"
+            type="personal.ivan.higgshomework.view_model.MainViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/image_view_avatar"
-            style="@style/MyImageView.Avatar"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_launcher_foreground"
-            app:layout_constraintDimensionRatio="W,1:1"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:title="@{model.username}"
+                tools:title="ivanf10710" />
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/app_bar">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/image_view_avatar"
+                    style="@style/MyImageView.Avatar"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_launcher_foreground"
+                    app:layout_constraintDimensionRatio="W,1:1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:loadImage="@{model.avatarUrl}" />
+
+                <ImageView
+                    android:id="@+id/image_view_badge"
+                    style="@style/MyImageView"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/bg_badge"
+                    android:visibility="@{model.admin ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintEnd_toEndOf="@+id/image_view_avatar"
+                    app:layout_constraintTop_toTopOf="@+id/image_view_avatar" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_view_location_label"
+                    style="@style/MyTextView.Label"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/label_location"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/image_view_avatar" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_view_location"
+                    style="@style/MyTextView.Value"
+                    android:text="@{model.location}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_view_location_label"
+                    tools:text="Taipei" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_view_blog_label"
+                    style="@style/MyTextView.Label"
+                    android:layout_marginTop="24dp"
+                    android:text="@string/label_blog"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_view_location" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_view_blog"
+                    style="@style/MyTextView.Value"
+                    android:autoLink="web"
+                    android:text="@{model.blogUrl}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_view_blog_label"
+                    tools:text="http://" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_view_biography_label"
+                    style="@style/MyTextView.Label"
+                    android:layout_marginTop="24dp"
+                    android:text="@string/label_biography"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_view_blog" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/text_view_biography"
+                    style="@style/MyTextView.Value"
+                    android:text="@{model.biography}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_view_biography_label"
+                    tools:text="I am ..." />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>

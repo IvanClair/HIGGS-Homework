@@ -5,10 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedList
 import androidx.paging.toLiveData
 import kotlinx.coroutines.CoroutineScope
+import personal.ivan.higgshomework.binding_model.UserDetailsPageBindingModel
 import personal.ivan.higgshomework.binding_model.UserSummaryVhBindingModel
 import personal.ivan.higgshomework.io.model.GitHubUserDetails
-import personal.ivan.higgshomework.io.model.GitHubUserSummary
-import personal.ivan.higgshomework.io.model.IoRqStatusModel
+import personal.ivan.higgshomework.io.model.IoStatus
 import personal.ivan.higgshomework.io.network.GitHubService
 import personal.ivan.higgshomework.io.util.IoUtil
 import javax.inject.Inject
@@ -29,7 +29,7 @@ class GitHubRepository @Inject constructor(private val service: GitHubService) {
      */
     fun getUserPagedList(
         scope: CoroutineScope,
-        ioStatus: MutableLiveData<IoRqStatusModel<List<GitHubUserSummary>>>
+        ioStatus: MutableLiveData<IoStatus>
     ): LiveData<PagedList<UserSummaryVhBindingModel>> {
         // create user list data source factory
         val factory = GitHubUserListDataSourceFactory(
@@ -49,43 +49,20 @@ class GitHubRepository @Inject constructor(private val service: GitHubService) {
     }
 
     /**
-     * Search users by [keyword]
-     *
-     * @param page indicate current pagination
-     */
-    fun searchUsers(
-        keyword: String,
-        page: Int
-    ): LiveData<IoRqStatusModel<List<GitHubUserSummary>>> =
-        object : IoUtil<List<GitHubUserSummary>, List<GitHubUserSummary>>() {
-            override suspend fun loadFromDb(): List<GitHubUserSummary>? = null
-
-            override suspend fun loadFromNetwork(): List<GitHubUserSummary>? =
-                service.searchUsers(
-                    query = keyword,
-                    page = page,
-                    pageLimit = PAGE_LIMIT
-                )
-
-            override suspend fun convertFromSource(source: List<GitHubUserSummary>?): List<GitHubUserSummary>? =
-                source
-
-            override suspend fun saveToDb(data: List<GitHubUserSummary>) {}
-
-        }.getLiveData()
-
-    /**
      * Ger user detailed information by [username]
      */
-    fun getUserDetails(username: String): LiveData<IoRqStatusModel<GitHubUserDetails>> =
-        object : IoUtil<GitHubUserDetails, GitHubUserDetails>() {
+    fun getUserDetails(
+        username: String,
+        ioStatus: MutableLiveData<IoStatus>
+    ): LiveData<UserDetailsPageBindingModel> =
+        object : IoUtil<GitHubUserDetails, UserDetailsPageBindingModel>(ioStatus = ioStatus) {
             override suspend fun loadFromDb(): GitHubUserDetails? = null
 
             override suspend fun loadFromNetwork(): GitHubUserDetails? =
                 service.getUserDetails(username = username)
 
-            override suspend fun convertFromSource(source: GitHubUserDetails?): GitHubUserDetails? =
-                source
+            override suspend fun convertFromSource(source: GitHubUserDetails?): UserDetailsPageBindingModel? =
+                source?.let { UserDetailsPageBindingModel(data = it) }
 
             override suspend fun saveToDb(data: GitHubUserDetails) {}
 

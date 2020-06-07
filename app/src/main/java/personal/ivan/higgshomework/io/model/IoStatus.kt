@@ -2,10 +2,7 @@ package personal.ivan.higgshomework.io.model
 
 import androidx.annotation.StringDef
 
-data class IoRqStatusModel<out T>(
-    @Status val status: String,
-    val data: T?
-) {
+data class IoStatus(@Status val status: String) {
     companion object {
 
         // Status
@@ -24,25 +21,16 @@ data class IoRqStatusModel<out T>(
         /**
          * Create success status
          */
-        fun <T> success(data: T) = IoRqStatusModel(
-            status = SUCCESS,
-            data = data
-        )
+        fun success(): IoStatus = IoStatus(status = SUCCESS)
 
         /**
          * Create fail status
          */
-        fun fail() = IoRqStatusModel(
-            status = FAIL,
-            data = null
-        )
+        fun fail(): IoStatus = IoStatus(status = FAIL)
 
         /**
          * Create loading status
          */
-        fun loading() = IoRqStatusModel(
-            status = LOADING,
-            data = null
-        )
+        fun loading(): IoStatus = IoStatus(status = LOADING)
     }
 }
