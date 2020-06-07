@@ -93,6 +93,7 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/text_view_blog"
                     style="@style/MyTextView.Value"
+                    android:autoLink="web"
                     android:text="@{model.blogUrl}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_view_blog_label"
