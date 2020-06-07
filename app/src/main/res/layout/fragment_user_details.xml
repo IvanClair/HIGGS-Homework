@@ -8,6 +8,10 @@
         <import type="android.view.View" />
 
         <variable
+            name="model"
+            type="personal.ivan.higgshomework.binding_model.UserDetailsPageBindingModel" />
+
+        <variable
             name="viewModel"
             type="personal.ivan.higgshomework.view_model.MainViewModel" />
     </data>
@@ -26,7 +30,7 @@
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:title="@{viewModel.userDetailsPageBindingModel.username}"
+                app:title="@{model.username}"
                 tools:title="ivanf10710" />
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -49,7 +53,7 @@
                     app:layout_constraintDimensionRatio="W,1:1"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:loadImage="@{viewModel.userDetailsPageBindingModel.avatarUrl}" />
+                    app:loadImage="@{model.avatarUrl}" />
 
                 <ImageView
                     android:id="@+id/image_view_badge"
@@ -58,7 +62,7 @@
                     android:layout_marginEnd="16dp"
                     android:contentDescription="@null"
                     android:src="@drawable/bg_badge"
-                    android:visibility="@{viewModel.userDetailsPageBindingModel.admin ? View.VISIBLE : View.GONE}"
+                    android:visibility="@{model.admin ? View.VISIBLE : View.GONE}"
                     app:layout_constraintEnd_toEndOf="@+id/image_view_avatar"
                     app:layout_constraintTop_toTopOf="@+id/image_view_avatar" />
 
@@ -73,7 +77,7 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/text_view_location"
                     style="@style/MyTextView.Value"
-                    android:text="@{viewModel.userDetailsPageBindingModel.location}"
+                    android:text="@{model.location}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_view_location_label"
                     tools:text="Taipei" />
@@ -89,7 +93,7 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/text_view_blog"
                     style="@style/MyTextView.Value"
-                    android:text="@{viewModel.userDetailsPageBindingModel.blogUrl}"
+                    android:text="@{model.blogUrl}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_view_blog_label"
                     tools:text="http://" />
@@ -105,7 +109,7 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/text_view_biography"
                     style="@style/MyTextView.Value"
-                    android:text="@{viewModel.userDetailsPageBindingModel.biography}"
+                    android:text="@{model.biography}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/text_view_biography_label"
                     tools:text="I am ..." />

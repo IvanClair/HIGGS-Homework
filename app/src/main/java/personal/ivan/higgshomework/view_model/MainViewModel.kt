@@ -2,7 +2,10 @@ package personal.ivan.higgshomework.view_model
 
 import android.view.View
 import android.widget.ImageView
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.paging.PagedList
@@ -63,16 +66,11 @@ class MainViewModel @Inject constructor(private val repository: GitHubRepository
 
     // region User Details Page
 
-    // selected username, use for trigger API
-    val selectedUsername: MutableLiveData<String> = MutableLiveData()
-
-    // user details page binding model
-    val userDetailsPageBindingModel: LiveData<UserDetailsPageBindingModel> =
-        selectedUsername.switchMap {
-            repository.getUserDetails(
-                username = it, ioStatus = ioStatus
-            )
-        }
+    /**
+     * Get user details live data
+     */
+    fun getUserDetails(username: String): LiveData<UserDetailsPageBindingModel> =
+        repository.getUserDetails(username = username, ioStatus = ioStatus)
 
     // endregion
 }

@@ -62,9 +62,6 @@ class UserDetailsFragment : DaggerFragment() {
         binding.imageViewAvatar.transitionName = args.username
         // observe live data
         viewModel.apply {
-            // set view model
-            selectedUsername.value = args.username
-
             // IO status
             ioStatus.observe(
                 viewLifecycleOwner,
@@ -73,10 +70,9 @@ class UserDetailsFragment : DaggerFragment() {
                 })
 
             // user details binding model
-            userDetailsPageBindingModel.observe(
+            getUserDetails(username = args.username).observe(
                 viewLifecycleOwner,
-                Observer { binding.viewModel = this }
-            )
+                Observer { binding.model = it })
         }
     }
 
