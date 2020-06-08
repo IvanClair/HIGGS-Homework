@@ -1,9 +1,10 @@
-package personal.ivan.higgshomework.view.user_list
+package personal.ivan.higgshomework.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.navigation.navGraphViewModels
@@ -12,17 +13,20 @@ import androidx.recyclerview.widget.GridLayoutManager
 import dagger.android.support.DaggerFragment
 import personal.ivan.higgshomework.R
 import personal.ivan.higgshomework.binding_model.UserSummaryVhBindingModel
-import personal.ivan.higgshomework.databinding.FragmentUserListBinding
+import personal.ivan.higgshomework.databinding.FragmentSearchUsersBinding
 import personal.ivan.higgshomework.di.AppViewModelFactory
 import personal.ivan.higgshomework.io.model.IoStatus
+import personal.ivan.higgshomework.ui_utils.UiUtil
 import personal.ivan.higgshomework.ui_utils.showIoAlert
+import personal.ivan.higgshomework.ui_utils.showOrHide
 import personal.ivan.higgshomework.view_model.MainViewModel
 import javax.inject.Inject
+import javax.inject.Named
 
-class UserListFragment : DaggerFragment() {
+class SearchUsersFragment : DaggerFragment() {
 
     // Data Binding
-    private lateinit var binding: FragmentUserListBinding
+    private lateinit var binding: FragmentSearchUsersBinding
 
     // View Model
     @Inject
@@ -31,7 +35,8 @@ class UserListFragment : DaggerFragment() {
 
     // Adapter
     @Inject
-    lateinit var userListAdapter: UserListAdapter
+    @Named("searchUsersAdapter")
+    lateinit var searchUsersAdapter: UserSummaryAdapter
 
     // region Life Cycle
 
@@ -43,7 +48,7 @@ class UserListFragment : DaggerFragment() {
         binding =
             DataBindingUtil.inflate(
                 inflater,
-                R.layout.fragment_user_list,
+                R.layout.fragment_search_users,
                 container,
                 false
             )
@@ -52,27 +57,52 @@ class UserListFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initEditText()
         initRecyclerView()
         viewModel.apply {
-
-            // set up view model
-            binding.viewModel = this
 
             // IO status
             ioStatus.observe(
                 viewLifecycleOwner,
                 Observer {
-                    updateUserListUiWidgetsVisibility(loading = it.status == IoStatus.LOADING)
+                    binding.progressBar showOrHide (it.status == IoStatus.LOADING)
                     if (it.status == IoStatus.FAIL) {
                         activity?.showIoAlert()
                     }
                 })
 
-            // user paged list
-            getUserPagedList.observe(
+            // clear keyboard focus
+            clearFocusTrigger.observe(
                 viewLifecycleOwner,
-                Observer { updateDataSource(it) }
+                Observer {
+                    binding.root.apply {
+                        requestFocus()
+                        UiUtil.hideKeyboard(view = this)
+                    }
+                }
             )
+
+            // search users paged list
+            searchUsersPagedList.observe(
+                viewLifecycleOwner,
+                Observer { updateDataSource(dataList = it) }
+            )
+        }
+    }
+
+    // endregion
+
+    // region Search Edit Text
+
+    private fun initEditText() {
+        binding.textInputEditText.setOnEditorActionListener { textView, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                viewModel.startSearchUsers(query = textView.text.toString())
+                binding.root.requestFocus()
+                UiUtil.hideKeyboard(view = textView)
+                return@setOnEditorActionListener true
+            }
+            false
         }
     }
 
@@ -84,7 +114,7 @@ class UserListFragment : DaggerFragment() {
         binding.recyclerViewUser.apply {
             setHasFixedSize(true)
             layoutManager = GridLayoutManager(context, 3)
-            adapter = userListAdapter
+            adapter = searchUsersAdapter
 
             // return transition
             postponeEnterTransition()
@@ -96,7 +126,7 @@ class UserListFragment : DaggerFragment() {
     }
 
     private fun updateDataSource(dataList: PagedList<UserSummaryVhBindingModel>?) {
-        (binding.recyclerViewUser.adapter as UserListAdapter).submitList(dataList)
+        (binding.recyclerViewUser.adapter as UserSummaryAdapter).submitList(dataList)
     }
 
     // endregion

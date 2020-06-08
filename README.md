@@ -7,3 +7,5 @@
 * s-4 create navigation graph
 * s-5 user list page implementation
 * s-6 user details page implementation
+* s-7 search users page implementation
+* s-8 add data base for user details

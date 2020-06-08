@@ -11,32 +11,35 @@ import personal.ivan.higgshomework.io.model.IoStatus
 import personal.ivan.higgshomework.io.network.GitHubService
 
 /**
- * Factory to create [GitHubUserListDataSource]
+ * Factory to create [GitHubSearchUsersDataSource]
  */
-class GitHubUserListDataSourceFactory(
+class GitHubSearchUsersDataSourceFactory(
     private val service: GitHubService,
     private val scope: CoroutineScope,
-    private val ioStatus: MutableLiveData<IoStatus>
+    private val ioStatus: MutableLiveData<IoStatus>,
+    private val query: String
 ) : DataSource.Factory<Int, UserSummaryVhBindingModel>() {
 
     /*
         Override
      */
     override fun create(): DataSource<Int, UserSummaryVhBindingModel> =
-        GitHubUserListDataSource(
+        GitHubSearchUsersDataSource(
             service = service,
             scope = scope,
-            ioStatus = ioStatus
+            ioStatus = ioStatus,
+            query = query
         )
 }
 
 /**
  * Data source of [UserSummaryVhBindingModel] for pagination
  */
-class GitHubUserListDataSource(
+class GitHubSearchUsersDataSource(
     private val service: GitHubService,
     private val scope: CoroutineScope,
-    private val ioStatus: MutableLiveData<IoStatus>
+    private val ioStatus: MutableLiveData<IoStatus>,
+    private val query: String
 ) : PageKeyedDataSource<Int, UserSummaryVhBindingModel>() {
 
     /*
@@ -81,10 +84,14 @@ class GitHubUserListDataSource(
         scope.launch(Dispatchers.IO) {
             try {
                 ioStatus.postValue(IoStatus.loading())
-                val dataList = service.getUserList(since = index)
+                val data = service.searchUsers(
+                    query = query,
+                    page = index,
+                    pageLimit = GitHubRepository.PAGE_LIMIT
+                )
                 callback.invoke(
-                    dataList.map { UserSummaryVhBindingModel(data = it) },
-                    index + dataList.size
+                    data.userList.map { UserSummaryVhBindingModel(data = it) },
+                    index + 1
                 )
                 ioStatus.postValue(IoStatus.success())
             } catch (e: Exception) {

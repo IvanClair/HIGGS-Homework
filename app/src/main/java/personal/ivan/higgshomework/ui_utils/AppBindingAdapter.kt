@@ -4,6 +4,7 @@ import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import personal.ivan.higgshomework.di.GlideApp
 
+
 /**
  * Loading web image by Glide
  */

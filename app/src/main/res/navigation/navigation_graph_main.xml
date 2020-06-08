@@ -6,14 +6,22 @@
     app:startDestination="@id/userListFragment"
     tools:ignore="UnusedNavigation">
 
+    <action
+        android:id="@+id/navigate_to_user_details"
+        app:destination="@id/userDetailsFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
     <fragment
         android:id="@+id/userListFragment"
-        android:name="personal.ivan.higgshomework.view.user_list.UserListFragment"
+        android:name="personal.ivan.higgshomework.view.UserListFragment"
         android:label="UserListFragment"
         tools:layout="@layout/fragment_user_list">
         <action
-            android:id="@+id/navigate_to_user_details"
-            app:destination="@id/userDetailsFragment"
+            android:id="@+id/navigate_to_search_users"
+            app:destination="@id/searchUsersFragment"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
@@ -30,4 +38,9 @@
             android:defaultValue=" "
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/searchUsersFragment"
+        android:name="personal.ivan.higgshomework.view.SearchUsersFragment"
+        android:label="SearchUsersFragment"
+        tools:layout="@layout/fragment_search_users" />
 </navigation>

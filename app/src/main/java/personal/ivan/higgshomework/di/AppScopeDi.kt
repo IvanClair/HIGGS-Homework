@@ -70,12 +70,6 @@ annotation class ViewModelKey(val value: KClass<out ViewModel>)
 @Module
 object RetrofitModule {
 
-    @JvmStatic
-    @Singleton
-    @Provides
-    fun provideGitHubRepository(service: GitHubService): GitHubRepository =
-        GitHubRepository(service = service)
-
     /**
      * Create Retrofit for API call
      */

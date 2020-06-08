@@ -1,5 +1,6 @@
 package personal.ivan.higgshomework.io.network
 
+import personal.ivan.higgshomework.io.model.GitHubSearchRs
 import personal.ivan.higgshomework.io.model.GitHubUserDetails
 import personal.ivan.higgshomework.io.model.GitHubUserSummary
 import retrofit2.http.GET
@@ -28,7 +29,7 @@ interface GitHubService {
         @Query("q") query: String,
         @Query("page") page: Int,
         @Query("page_limit") pageLimit: Int
-    ): List<GitHubUserSummary>
+    ): GitHubSearchRs
 
     /**
      * Get user details
