@@ -12,6 +12,11 @@ data class GitHubUserSummary(
 )
 
 /**
+ * Search GitHub users
+ */
+data class GitHubSearchRs(@field:Json(name = "items") val userList: List<GitHubUserSummary>)
+
+/**
  * Detailed information of a user
  */
 data class GitHubUserDetails(

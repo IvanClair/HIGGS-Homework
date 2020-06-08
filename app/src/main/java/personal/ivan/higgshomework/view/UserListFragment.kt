@@ -1,4 +1,4 @@
-package personal.ivan.higgshomework.view.user_list
+package personal.ivan.higgshomework.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,6 +18,7 @@ import personal.ivan.higgshomework.io.model.IoStatus
 import personal.ivan.higgshomework.ui_utils.showIoAlert
 import personal.ivan.higgshomework.view_model.MainViewModel
 import javax.inject.Inject
+import javax.inject.Named
 
 class UserListFragment : DaggerFragment() {
 
@@ -31,7 +32,8 @@ class UserListFragment : DaggerFragment() {
 
     // Adapter
     @Inject
-    lateinit var userListAdapter: UserListAdapter
+    @Named("userListAdapter")
+    lateinit var userListAdapter: UserSummaryAdapter
 
     // region Life Cycle
 
@@ -69,9 +71,9 @@ class UserListFragment : DaggerFragment() {
                 })
 
             // user paged list
-            getUserPagedList.observe(
+            userListPagedList.observe(
                 viewLifecycleOwner,
-                Observer { updateDataSource(it) }
+                Observer { updateDataSource(dataList = it) }
             )
         }
     }
@@ -96,7 +98,7 @@ class UserListFragment : DaggerFragment() {
     }
 
     private fun updateDataSource(dataList: PagedList<UserSummaryVhBindingModel>?) {
-        (binding.recyclerViewUser.adapter as UserListAdapter).submitList(dataList)
+        (binding.recyclerViewUser.adapter as UserSummaryAdapter).submitList(dataList)
     }
 
     // endregion

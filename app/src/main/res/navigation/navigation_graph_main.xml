@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/userListFragment"
-        android:name="personal.ivan.higgshomework.view.user_list.UserListFragment"
+        android:name="personal.ivan.higgshomework.view.UserListFragment"
         android:label="UserListFragment"
         tools:layout="@layout/fragment_user_list">
         <action
@@ -39,7 +39,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchUsersFragment"
-        android:name="personal.ivan.higgshomework.view.search_users.SearchUsersFragment"
+        android:name="personal.ivan.higgshomework.view.SearchUsersFragment"
         android:label="SearchUsersFragment"
         tools:layout="@layout/fragment_search_users" />
 </navigation>

@@ -13,13 +13,18 @@ import personal.ivan.higgshomework.io.network.GitHubService
 import personal.ivan.higgshomework.io.util.IoUtil
 import javax.inject.Inject
 
-class GitHubRepository @Inject constructor(private val service: GitHubService) {
+class GitHubRepository @Inject constructor(
+    private val service: GitHubService,
+    private val pagedListConfig: PagedList.Config
+) {
 
     // Constant
     companion object {
         const val PAGE_LIMIT = 180
         const val PREFETCH_DISTANCE = 5
     }
+
+    // region GitHub User Summary
 
     /**
      * Get user list by paging
@@ -31,22 +36,38 @@ class GitHubRepository @Inject constructor(private val service: GitHubService) {
         scope: CoroutineScope,
         ioStatus: MutableLiveData<IoStatus>
     ): LiveData<PagedList<UserSummaryVhBindingModel>> {
-        // create user list data source factory
         val factory = GitHubUserListDataSourceFactory(
             service = service,
             scope = scope,
             ioStatus = ioStatus
         )
-
-        // pagination config
-        val config = PagedList.Config.Builder()
-            .setEnablePlaceholders(false)
-            .setPageSize(PAGE_LIMIT)
-            .setPrefetchDistance(PREFETCH_DISTANCE)
-            .build()
-
-        return factory.toLiveData(config)
+        return factory.toLiveData(pagedListConfig)
     }
+
+    /**
+     * Search users by paging
+     *
+     * @param scope    the assigned [CoroutineScope]
+     * @param ioStatus live data for listen IO status
+     * @param query    keyword
+     */
+    fun getSearchUsersPagedList(
+        scope: CoroutineScope,
+        ioStatus: MutableLiveData<IoStatus>,
+        query: String
+    ): LiveData<PagedList<UserSummaryVhBindingModel>> {
+        val factory = GitHubSearchUsersDataSourceFactory(
+            service = service,
+            scope = scope,
+            ioStatus = ioStatus,
+            query = query
+        )
+        return factory.toLiveData(pagedListConfig)
+    }
+
+    // endregion
+
+    // region User Details
 
     /**
      * Ger user detailed information by [username]
@@ -67,4 +88,6 @@ class GitHubRepository @Inject constructor(private val service: GitHubService) {
             override suspend fun saveToDb(data: GitHubUserDetails) {}
 
         }.getLiveData()
+
+    // endregion
 }

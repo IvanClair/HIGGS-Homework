@@ -1,4 +1,4 @@
-package personal.ivan.higgshomework.view.search_users
+package personal.ivan.higgshomework.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -21,6 +21,7 @@ import personal.ivan.higgshomework.ui_utils.showIoAlert
 import personal.ivan.higgshomework.ui_utils.showOrHide
 import personal.ivan.higgshomework.view_model.MainViewModel
 import javax.inject.Inject
+import javax.inject.Named
 
 class SearchUsersFragment : DaggerFragment() {
 
@@ -31,6 +32,11 @@ class SearchUsersFragment : DaggerFragment() {
     @Inject
     lateinit var viewModelFactory: AppViewModelFactory
     private val viewModel by navGraphViewModels<MainViewModel>(R.id.navigation_graph_main) { viewModelFactory }
+
+    // Adapter
+    @Inject
+    @Named("searchUsersAdapter")
+    lateinit var searchUsersAdapter: UserSummaryAdapter
 
     // region Life Cycle
 
@@ -76,10 +82,10 @@ class SearchUsersFragment : DaggerFragment() {
                 }
             )
 
-            // user paged list
-            getUserPagedList.observe(
+            // search users paged list
+            searchUsersPagedList.observe(
                 viewLifecycleOwner,
-                Observer { updateDataSource(it) }
+                Observer { updateDataSource(dataList = it) }
             )
         }
     }
@@ -108,7 +114,7 @@ class SearchUsersFragment : DaggerFragment() {
         binding.recyclerViewUser.apply {
             setHasFixedSize(true)
             layoutManager = GridLayoutManager(context, 3)
-//            adapter = userListAdapter
+            adapter = searchUsersAdapter
 
             // return transition
             postponeEnterTransition()
@@ -120,7 +126,7 @@ class SearchUsersFragment : DaggerFragment() {
     }
 
     private fun updateDataSource(dataList: PagedList<UserSummaryVhBindingModel>?) {
-//        (binding.recyclerViewUser.adapter as UserListAdapter).submitList(dataList)
+        (binding.recyclerViewUser.adapter as UserSummaryAdapter).submitList(dataList)
     }
 
     // endregion

@@ -2,10 +2,7 @@ package personal.ivan.higgshomework.view_model
 
 import android.view.View
 import android.widget.ImageView
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.paging.PagedList
@@ -15,7 +12,7 @@ import personal.ivan.higgshomework.binding_model.UserSummaryVhBindingModel
 import personal.ivan.higgshomework.io.model.IoStatus
 import personal.ivan.higgshomework.repository.GitHubRepository
 import personal.ivan.higgshomework.ui_utils.UiUtil
-import personal.ivan.higgshomework.view.user_list.UserListFragmentDirections
+import personal.ivan.higgshomework.view.UserListFragmentDirections
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(private val repository: GitHubRepository) : ViewModel() {
@@ -35,7 +32,7 @@ class MainViewModel @Inject constructor(private val repository: GitHubRepository
         }
 
     // user list data list from IO
-    val getUserPagedList: LiveData<PagedList<UserSummaryVhBindingModel>> =
+    val userListPagedList: LiveData<PagedList<UserSummaryVhBindingModel>> =
         repository.getUserPagedList(scope = viewModelScope, ioStatus = ioStatus)
 
     /**
@@ -58,6 +55,31 @@ class MainViewModel @Inject constructor(private val repository: GitHubRepository
         }
     }
 
+    // endregion
+
+    // region Search Users
+
+    private val keyWord = MutableLiveData<String>()
+    val searchUsersPagedList: LiveData<PagedList<UserSummaryVhBindingModel>> =
+        keyWord.switchMap {
+            repository.getSearchUsersPagedList(
+                scope = viewModelScope,
+                ioStatus = ioStatus,
+                query = it
+            )
+        }
+
+    /**
+     * Start search users
+     */
+    fun startSearchUsers(query: String) {
+        keyWord.value = query
+    }
+
+    // endregion
+
+    // region Shared - User Summary Adapter Event
+
     /**
      * User clicked an user
      */
@@ -74,14 +96,6 @@ class MainViewModel @Inject constructor(private val repository: GitHubRepository
             )
         }
     }
-
-    // region Search Users
-
-    fun startSearchUsers(query: String) {
-
-    }
-
-    // endregion
 
     // endregion
 
