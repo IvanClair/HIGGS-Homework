@@ -1,15 +1,13 @@
 package personal.ivan.higgshomework.di
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
-import personal.ivan.higgshomework.binding_model.UserListPageBindingModel
 import personal.ivan.higgshomework.view.UserDetailsFragment
+import personal.ivan.higgshomework.view.search_users.SearchUsersFragment
 import personal.ivan.higgshomework.view.user_list.UserListAdapter
 import personal.ivan.higgshomework.view.user_list.UserListFragment
 import personal.ivan.higgshomework.view_model.MainViewModel
@@ -37,6 +35,14 @@ abstract class MainFragmentModule {
             MainScopeModule::class]
     )
     abstract fun contributeUserListFragment(): UserListFragment
+
+    @MainScope
+    @ContributesAndroidInjector(
+        modules = [
+            MainViewModelModule::class,
+            MainScopeModule::class]
+    )
+    abstract fun contributeSearchUsersFragment(): SearchUsersFragment
 
     @MainScope
     @ContributesAndroidInjector(

@@ -23,6 +23,9 @@ class MainViewModel @Inject constructor(private val repository: GitHubRepository
     // IO Status
     val ioStatus: MutableLiveData<IoStatus> = MutableLiveData<IoStatus>()
 
+    // Clear Keyboard Focus
+    val clearFocusTrigger = MutableLiveData<Boolean>()
+
     // region User List Page
 
     // page binding model
@@ -46,6 +49,16 @@ class MainViewModel @Inject constructor(private val repository: GitHubRepository
     }
 
     /**
+     * Search user clicked
+     */
+    fun searchUserOnClick(view: View) {
+        if (UiUtil.allowClick()) {
+            // navigate to search users page
+            view.findNavController().navigate(UserListFragmentDirections.navigateToSearchUsers())
+        }
+    }
+
+    /**
      * User clicked an user
      */
     fun userOnClickListener(
@@ -61,6 +74,14 @@ class MainViewModel @Inject constructor(private val repository: GitHubRepository
             )
         }
     }
+
+    // region Search Users
+
+    fun startSearchUsers(query: String) {
+
+    }
+
+    // endregion
 
     // endregion
 

@@ -6,4 +6,5 @@
     <string name="label_location">Location :</string>
     <string name="label_blog">Blog :</string>
     <string name="label_biography">Biography :</string>
+    <string name="hint_user_name">User name</string>
 </resources>

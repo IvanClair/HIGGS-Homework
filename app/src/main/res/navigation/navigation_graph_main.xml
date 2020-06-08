@@ -18,6 +18,13 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/navigate_to_search_users"
+            app:destination="@id/searchUsersFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
 
     <fragment
@@ -30,4 +37,9 @@
             android:defaultValue=" "
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/searchUsersFragment"
+        android:name="personal.ivan.higgshomework.view.search_users.SearchUsersFragment"
+        android:label="SearchUsersFragment"
+        tools:layout="@layout/fragment_search_users" />
 </navigation>
