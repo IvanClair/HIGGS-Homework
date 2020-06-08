@@ -57,6 +57,7 @@ class SearchUsersFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.progressBar showOrHide false
         initEditText()
         initRecyclerView()
         viewModel.apply {
