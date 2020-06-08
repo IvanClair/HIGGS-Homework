@@ -65,7 +65,7 @@ data class UserDetailsPageBindingModel(
 ) {
     constructor(data: GitHubUserDetails) : this(
         avatarUrl = data.avatarUrl ?: "",
-        username = data.username ?: "",
+        username = data.username,
         admin = data.admin ?: false,
         biography = data.biography ?: "N/A",
         location = data.location ?: "N/A",

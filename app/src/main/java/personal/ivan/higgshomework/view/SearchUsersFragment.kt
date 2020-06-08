@@ -62,7 +62,7 @@ class SearchUsersFragment : DaggerFragment() {
         viewModel.apply {
 
             // IO status
-            ioStatus.observe(
+            searchUsersIoStatus.observe(
                 viewLifecycleOwner,
                 Observer {
                     binding.progressBar showOrHide (it.status == IoStatus.LOADING)

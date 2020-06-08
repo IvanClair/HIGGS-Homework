@@ -61,7 +61,7 @@ class UserListFragment : DaggerFragment() {
             binding.viewModel = this
 
             // IO status
-            ioStatus.observe(
+            userListIoStatus.observe(
                 viewLifecycleOwner,
                 Observer {
                     updateUserListUiWidgetsVisibility(loading = it.status == IoStatus.LOADING)

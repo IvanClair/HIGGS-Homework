@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.room.Room
 import com.bumptech.glide.GlideBuilder
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.module.AppGlideModule
@@ -16,8 +17,8 @@ import okhttp3.logging.HttpLoggingInterceptor
 import personal.ivan.higgshomework.BuildConfig
 import personal.ivan.higgshomework.MainApplication
 import personal.ivan.higgshomework.R
+import personal.ivan.higgshomework.io.db.AppDatabase
 import personal.ivan.higgshomework.io.network.GitHubService
-import personal.ivan.higgshomework.repository.GitHubRepository
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
@@ -31,6 +32,7 @@ import kotlin.reflect.KClass
         AndroidInjectionModule::class,
         ViewModelModule::class,
         RetrofitModule::class,
+        DbModule::class,
         MainFragmentModule::class]
 )
 interface AppComponent : AndroidInjector<MainApplication> {
@@ -111,6 +113,27 @@ object RetrofitModule {
     @Provides
     fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor =
         HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
+}
+
+// endregion
+
+// region Database
+
+@Module
+object DbModule {
+
+    @JvmStatic
+    @Singleton
+    @Provides
+    fun provideAppDb(application: MainApplication) =
+        Room
+            .databaseBuilder(
+                application,
+                AppDatabase::class.java,
+                application.packageName
+            )
+            .fallbackToDestructiveMigration()
+            .build()
 }
 
 // endregion
