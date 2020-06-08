@@ -7,6 +7,7 @@ import androidx.paging.toLiveData
 import kotlinx.coroutines.CoroutineScope
 import personal.ivan.higgshomework.binding_model.UserDetailsPageBindingModel
 import personal.ivan.higgshomework.binding_model.UserSummaryVhBindingModel
+import personal.ivan.higgshomework.io.db.GitHubUserDetailsDao
 import personal.ivan.higgshomework.io.model.GitHubUserDetails
 import personal.ivan.higgshomework.io.model.IoStatus
 import personal.ivan.higgshomework.io.network.GitHubService
@@ -15,7 +16,8 @@ import javax.inject.Inject
 
 class GitHubRepository @Inject constructor(
     private val service: GitHubService,
-    private val pagedListConfig: PagedList.Config
+    private val pagedListConfig: PagedList.Config,
+    private val userDetailsDao: GitHubUserDetailsDao
 ) {
 
     // Constant
@@ -77,7 +79,8 @@ class GitHubRepository @Inject constructor(
         ioStatus: MutableLiveData<IoStatus>
     ): LiveData<UserDetailsPageBindingModel> =
         object : IoUtil<GitHubUserDetails, UserDetailsPageBindingModel>(ioStatus = ioStatus) {
-            override suspend fun loadFromDb(): GitHubUserDetails? = null
+            override suspend fun loadFromDb(): GitHubUserDetails? =
+                userDetailsDao.load(username = username)
 
             override suspend fun loadFromNetwork(): GitHubUserDetails? =
                 service.getUserDetails(username = username)
@@ -85,7 +88,9 @@ class GitHubRepository @Inject constructor(
             override suspend fun convertFromSource(source: GitHubUserDetails?): UserDetailsPageBindingModel? =
                 source?.let { UserDetailsPageBindingModel(data = it) }
 
-            override suspend fun saveToDb(data: GitHubUserDetails) {}
+            override suspend fun saveToDb(data: GitHubUserDetails) {
+                userDetailsDao.insertAll(data = data)
+            }
 
         }.getLiveData()
 

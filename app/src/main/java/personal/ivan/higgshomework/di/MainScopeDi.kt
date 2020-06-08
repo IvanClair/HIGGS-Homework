@@ -7,6 +7,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
+import personal.ivan.higgshomework.io.db.AppDatabase
+import personal.ivan.higgshomework.io.db.GitHubUserDetailsDao
 import personal.ivan.higgshomework.io.network.GitHubService
 import personal.ivan.higgshomework.repository.GitHubRepository
 import personal.ivan.higgshomework.view.SearchUsersFragment
@@ -99,15 +101,25 @@ object MainScopeModule {
     fun provideSearchUsersAdapter(viewModel: MainViewModel): UserSummaryAdapter =
         UserSummaryAdapter(viewModel = viewModel)
 
+    /**
+     * GitHub repository
+     */
     @JvmStatic
     @MainScope
     @Provides
     fun provideGitHubRepository(
         service: GitHubService,
-        config: PagedList.Config
-    ): GitHubRepository =
-        GitHubRepository(service = service, pagedListConfig = config)
+        config: PagedList.Config,
+        dao: GitHubUserDetailsDao
+    ): GitHubRepository = GitHubRepository(
+        service = service,
+        pagedListConfig = config,
+        userDetailsDao = dao
+    )
 
+    /**
+     * Paged list configuration
+     */
     @JvmStatic
     @MainScope
     @Provides
@@ -117,6 +129,14 @@ object MainScopeModule {
             .setPageSize(GitHubRepository.PAGE_LIMIT)
             .setPrefetchDistance(GitHubRepository.PREFETCH_DISTANCE)
             .build()
+
+    /**
+     * GitHub user details DAO
+     */
+    @JvmStatic
+    @MainScope
+    @Provides
+    fun provideUserDetailsDao(db: AppDatabase): GitHubUserDetailsDao = db.gitHubUserDetailsDao()
 }
 
 // endregion

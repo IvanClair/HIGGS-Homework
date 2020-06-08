@@ -14,6 +14,7 @@ import personal.ivan.higgshomework.R
 import personal.ivan.higgshomework.databinding.FragmentUserDetailsBinding
 import personal.ivan.higgshomework.di.AppViewModelFactory
 import personal.ivan.higgshomework.io.model.IoStatus
+import personal.ivan.higgshomework.ui_utils.showIoAlert
 import personal.ivan.higgshomework.ui_utils.showOrHide
 import personal.ivan.higgshomework.view_model.MainViewModel
 import javax.inject.Inject
@@ -63,10 +64,13 @@ class UserDetailsFragment : DaggerFragment() {
         // observe live data
         viewModel.apply {
             // IO status
-            ioStatus.observe(
+            userDetailsIoStatus.observe(
                 viewLifecycleOwner,
                 Observer {
                     binding.progressBar showOrHide (it.status == IoStatus.LOADING)
+                    if (it.status == IoStatus.FAIL) {
+                        activity?.showIoAlert()
+                    }
                 })
 
             // user details binding model

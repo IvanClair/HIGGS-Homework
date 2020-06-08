@@ -57,12 +57,13 @@ class SearchUsersFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.progressBar showOrHide false
         initEditText()
         initRecyclerView()
         viewModel.apply {
 
             // IO status
-            ioStatus.observe(
+            searchUsersIoStatus.observe(
                 viewLifecycleOwner,
                 Observer {
                     binding.progressBar showOrHide (it.status == IoStatus.LOADING)

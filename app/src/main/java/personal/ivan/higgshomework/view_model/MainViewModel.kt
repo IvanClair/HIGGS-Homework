@@ -18,7 +18,9 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(private val repository: GitHubRepository) : ViewModel() {
 
     // IO Status
-    val ioStatus: MutableLiveData<IoStatus> = MutableLiveData<IoStatus>()
+    val userListIoStatus: MutableLiveData<IoStatus> = MutableLiveData<IoStatus>()
+    val searchUsersIoStatus: MutableLiveData<IoStatus> = MutableLiveData<IoStatus>()
+    val userDetailsIoStatus: MutableLiveData<IoStatus> = MutableLiveData<IoStatus>()
 
     // Clear Keyboard Focus
     val clearFocusTrigger = MutableLiveData<Boolean>()
@@ -33,7 +35,7 @@ class MainViewModel @Inject constructor(private val repository: GitHubRepository
 
     // user list data list from IO
     val userListPagedList: LiveData<PagedList<UserSummaryVhBindingModel>> =
-        repository.getUserPagedList(scope = viewModelScope, ioStatus = ioStatus)
+        repository.getUserPagedList(scope = viewModelScope, ioStatus = userListIoStatus)
 
     /**
      * Update user list page UI widgets visibility
@@ -64,7 +66,7 @@ class MainViewModel @Inject constructor(private val repository: GitHubRepository
         keyWord.switchMap {
             repository.getSearchUsersPagedList(
                 scope = viewModelScope,
-                ioStatus = ioStatus,
+                ioStatus = searchUsersIoStatus,
                 query = it
             )
         }
@@ -105,7 +107,7 @@ class MainViewModel @Inject constructor(private val repository: GitHubRepository
      * Get user details live data
      */
     fun getUserDetails(username: String): LiveData<UserDetailsPageBindingModel> =
-        repository.getUserDetails(username = username, ioStatus = ioStatus)
+        repository.getUserDetails(username = username, ioStatus = userDetailsIoStatus)
 
     // endregion
 }
