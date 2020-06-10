@@ -11,10 +11,7 @@ import personal.ivan.higgshomework.io.db.AppDatabase
 import personal.ivan.higgshomework.io.db.GitHubUserDetailsDao
 import personal.ivan.higgshomework.io.network.GitHubService
 import personal.ivan.higgshomework.repository.GitHubRepository
-import personal.ivan.higgshomework.view.SearchUsersFragment
-import personal.ivan.higgshomework.view.UserDetailsFragment
-import personal.ivan.higgshomework.view.UserListFragment
-import personal.ivan.higgshomework.view.UserSummaryAdapter
+import personal.ivan.higgshomework.view.*
 import personal.ivan.higgshomework.view_model.MainViewModel
 import javax.inject.Named
 import javax.inject.Scope
@@ -57,6 +54,14 @@ abstract class MainFragmentModule {
             MainScopeModule::class]
     )
     abstract fun contributeUserDetailsFragment(): UserDetailsFragment
+
+    @MainScope
+    @ContributesAndroidInjector(
+        modules = [
+            MainViewModelModule::class,
+            MainScopeModule::class]
+    )
+    abstract fun contributeRomanToChineseFragment(): RomanToChineseFragment
 }
 
 // endregion
