@@ -12,6 +12,7 @@ import personal.ivan.higgshomework.R
 import personal.ivan.higgshomework.databinding.FragmentRomanToChineseBinding
 import personal.ivan.higgshomework.di.AppViewModelFactory
 import personal.ivan.higgshomework.ui_utils.UiUtil
+import personal.ivan.higgshomework.util.convertRomanToChinese
 import personal.ivan.higgshomework.view_model.MainViewModel
 import javax.inject.Inject
 
@@ -53,8 +54,7 @@ class RomanToChineseFragment : DaggerFragment() {
     private fun initEditText() {
         binding.textInputEditTextRoman.setOnEditorActionListener { textView, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_GO) {
-                // todo
-                updateDisplay(text = "")
+                updateDisplay(text = textView.text.toString().convertRomanToChinese())
                 binding.root.requestFocus()
                 UiUtil.hideKeyboard(view = textView)
                 return@setOnEditorActionListener true
@@ -68,7 +68,10 @@ class RomanToChineseFragment : DaggerFragment() {
     // region Result Text View
 
     private fun updateDisplay(text: String) {
-        binding.textViewChinese.text = text
+        val displayString =
+            if (text.isEmpty()) context?.getString(R.string.warning_incorrect_roman_number)
+            else text
+        binding.textViewChinese.text = displayString
     }
 
     // endregion

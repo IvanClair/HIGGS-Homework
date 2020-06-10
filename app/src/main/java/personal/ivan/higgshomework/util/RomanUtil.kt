@@ -1,5 +1,7 @@
 package personal.ivan.higgshomework.util
 
+import java.util.*
+
 // Roman Map
 private val romanMap = mutableMapOf(
     "I" to 1,
@@ -38,9 +40,11 @@ private val chineseMap = mutableMapOf(
  */
 fun String.convertRomanToChinese(): String {
 
+    val handledString = toUpperCase(Locale.ENGLISH)
+
     // convert to integer
     var intResult = 0
-    val length = this.length
+    val length = handledString.length
     var i = 0
     while (i < length) {
 
@@ -49,8 +53,8 @@ fun String.convertRomanToChinese(): String {
             return ""
         }
 
-        val temp1 = romanMap[this.substring(i, i + 2)]
-        val temp2 = romanMap[this.substring(i, i + 1)]
+        val temp1 = romanMap[handledString.substring(i, i + 2)]
+        val temp2 = romanMap[handledString.substring(i, i + 1)]
         when {
             // encounter sequential wording
             i + 1 < length && temp1 != null -> {
