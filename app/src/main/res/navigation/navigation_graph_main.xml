@@ -26,6 +26,13 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/navigate_to_roman_to_chinese"
+            app:destination="@id/romanToChineseFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
 
     <fragment
@@ -43,4 +50,9 @@
         android:name="personal.ivan.higgshomework.view.SearchUsersFragment"
         android:label="SearchUsersFragment"
         tools:layout="@layout/fragment_search_users" />
+    <fragment
+        android:id="@+id/romanToChineseFragment"
+        android:name="personal.ivan.higgshomework.view.RomanToChineseFragment"
+        android:label="RomanToChineseFragment"
+        tools:layout="@layout/fragment_roman_to_chinese" />
 </navigation>

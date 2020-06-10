@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.GridLayoutManager
@@ -54,6 +55,7 @@ class UserListFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initMenu()
         initRecyclerView()
         viewModel.apply {
 
@@ -75,6 +77,20 @@ class UserListFragment : DaggerFragment() {
                 viewLifecycleOwner,
                 Observer { updateDataSource(dataList = it) }
             )
+        }
+    }
+
+    // endregion
+
+    // region Menu
+
+    private fun initMenu() {
+        binding.toolBar.setOnMenuItemClickListener {
+            if (it.itemId == R.id.menu_translate) {
+                findNavController().navigate(UserListFragmentDirections.navigateToRomanToChinese())
+                return@setOnMenuItemClickListener true
+            }
+            false
         }
     }
 

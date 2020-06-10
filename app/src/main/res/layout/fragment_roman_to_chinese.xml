@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusableInTouchMode="true"
+        android:padding="16dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_input_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_roman_number"
+            app:endIconMode="clear_text"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/text_input_edit_text_roman"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:digits="IVXLCDMivxlcdm"
+                android:imeOptions="actionGo"
+                android:inputType="text"
+                android:singleLine="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_view_convert_label"
+            style="@style/MyTextView.Label"
+            android:layout_marginTop="40dp"
+            android:gravity="center"
+            android:text="@string/label_convert_to"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_input_layout" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_view_chinese"
+            style="@style/MyTextView.Value"
+            android:layout_marginTop="40dp"
+            android:gravity="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_convert_label"
+            tools:text="一百" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
