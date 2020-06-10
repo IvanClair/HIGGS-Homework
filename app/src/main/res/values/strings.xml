@@ -10,4 +10,5 @@
     <string name="hint_roman_number">Please enter valid roman number</string>
     <string name="label_convert_to">convert to …</string>
     <string name="label_translate">translate</string>
+    <string name="warning_incorrect_roman_number">Incorrect Roman Number</string>
 </resources>
